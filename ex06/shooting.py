@@ -213,8 +213,8 @@ def move_player(screen, key):
                     if player_hp <= 0:
                         idx = 2
                         t = 0
-                    if player_hp == 0:
-                        player_hp = 10 #無敵時間
+                    if player_muteki == 0:
+                        player_muteki = 10 #無敵時間
                     ebull_f[i] = False
                     ebull_f2[i] = False
                 
