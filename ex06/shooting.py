@@ -14,6 +14,7 @@ img_enemy = [
 img_hp = pg.image.load("fig/gauge.png")#体力ゲージ
 img_title = pg.image.load("fig/shoot_title.jpg")#タイトル画像
 
+#佐々木
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 YELLOW = (255, 243, 82)
@@ -27,16 +28,17 @@ py = 240 #playerのY座標
 bx = 0 #弾のX座標
 by = 0 #弾のY座標
 t = 0 #タイマー変数
-
+#佐々木
 REROAD_TIME = 0
 reload_timer = 0
 score = 0
-lives = 0
 
 BULLET_MAX = 100 #弾の最大値
 ENEMY_MAX = 100 #敵の最大数
+#佐々木
 BULLET_MAX_lv2 = 150 #弾の最大値(lv.2)
 ENEMY_MAX_lv2 = 150 #敵の最大数(lv.2)
+
 ENEMY_BULLET=1
 bull_n = 0
 bull_x =[0]*BULLET_MAX
@@ -52,14 +54,10 @@ ebull_f2 = [False]*ENEMY_MAX
 e_list = [0]*ENEMY_MAX
 e_sp = [0]*ENEMY_MAX
 
+#佐々木
 p_hp = 100 #HP
 p_muteki = 0 #無敵状態の管理
-
 idx = 0 #ゲーム状態の管理
-
-p_damage = None#プレイヤーがダメージを受けた際のSE
-p_shoot = None#プレイヤーのショットSE
-e_down = None#敵を倒した際のSE
 
 
 def set_bullet():#弾のスタンバイ
@@ -106,22 +104,22 @@ def move_mafu(screen,key): #playerの移動
         px = px + 10
         if px > 570:
             px = 570
-                
+
+    #佐々木    
     if key[pg.K_SPACE]:
         if  reload_timer > REROAD_TIME:
             set_bullet()
-            p_shoot.play()
             reload_timer = 0
         else:
             reload_timer += 1
-
+    #佐々木
     if p_muteki %2 == 0:
         screen.blit(img_mafu,[px-16,py-16])
-
     if p_muteki > 0:
         p_muteki = p_muteki - 1#無敵時は当たり判定を無効にする
         return
 
+    #佐々木
     elif idx == 1: #Peacefull mode
         for i in range(ENEMY_MAX):
             if ebull_f[i] == True:
@@ -131,7 +129,6 @@ def move_mafu(screen,key): #playerの移動
             
                 if distance(ebull_x[i],ebull_y[i],px,py) < r*r: #敵及び敵の攻撃に接触
                     # effect(px,py)
-                    p_damage.play()
                     p_hp = p_hp - 5 #ダメージを受ける
                     if p_hp <= 0:
                         idx = 2
@@ -143,7 +140,7 @@ def move_mafu(screen,key): #playerの移動
                 
                 REROAD_TIME = 10
 
-                    
+    #佐々木            
     elif idx == 3: #Hard mode
         for i in range(ENEMY_MAX):
             if ebull_f[i] == True:
@@ -153,7 +150,6 @@ def move_mafu(screen,key): #playerの移動
 
                 if distance(ebull_x[i],ebull_y[i], px, py) < r*r: #敵及び敵の攻撃に接触
                     # effect(px,py)
-                    p_damage.play()
                     p_hp = p_hp - 10 #ダメージを受ける
                     if p_hp <= 0:
                         idx = 2
@@ -164,7 +160,7 @@ def move_mafu(screen,key): #playerの移動
                     ebull_f2[i] = False
 
                 REROAD_TIME = 30
-
+    #佐々木
     elif idx == 6: #stage lv.2
         for i in range(ENEMY_MAX):
             if ebull_f[i] == True:
@@ -173,7 +169,7 @@ def move_mafu(screen,key): #playerの移動
                 r = int((w+h)/4+(32+32)/4)
                 
                 if distance(ebull_x[i],ebull_y[i],px,py) < r*r: #敵及び敵の攻撃に接触
-                    p_damage.play()
+
                     p_hp = p_hp - 15 #ダメージを受ける
                     if p_hp <= 0:
                         idx = 2
@@ -225,12 +221,11 @@ def move_kaeru(screen): #enemyの移動
                     if bull_f[n]==True and distance(ebull_x[i]-16,ebull_y[i]-16,bull_x[n],bull_y[n])<r*r:
                         bull_f[n]=False
                         score = score + 10
-                        e_down.play()
+                        #佐々木
                         if idx == 1:
                             if score >= 50:
                                 idx = 7
                                 t = 0
-
                         if idx == 3:
                             if score >= 1000:
                                 idx = 4
@@ -239,6 +234,7 @@ def move_kaeru(screen): #enemyの移動
                             if score >= 1000:                            
                                 idx = 7
                                 t = 0
+
                         ebull_f[i]=False
                         ebull_f2[i]=False
             
@@ -260,15 +256,11 @@ def draw_text(screen,x,y,text,size,col):#文字表示の関数
 
 def main(): #main関数
 
-    global t, bg_y, idx, p_hp, p_muteki, px, py, score, p_damage, p_shoot, e_down
+    global t, bg_y, idx, p_hp, p_muteki, px, py, score
     pg.init()
     pg.display.set_caption("シューティングゲーム")
     screen = pg.display.set_mode((640,480))
     clock = pg.time.Clock()
-    p_damage = pg.mixer.Sound("se/p_damage.mp3")
-    p_shoot = pg.mixer.Sound("se/p_shoot.mp3")
-    e_down = pg.mixer.Sound("se/enemydown.mp3")
-
     running = True
     while running:
         t=t+1
@@ -281,6 +273,7 @@ def main(): #main関数
         screen.blit(img_bg,[0,bg_y])
         key = pg.key.get_pressed()
 
+        #佐々木
         if idx == 0: #title
             # for event in pygame.event.get():
             img_t = pg.transform.rotozoom(img_title,0,1.0)
@@ -313,7 +306,7 @@ def main(): #main関数
                     bull_f[i] = False
                 for i in range(ENEMY_MAX):
                     ebull_f[i] = False
-
+                    
         if idx == 1: #playing #peacefull
             move_mafu(screen,key)
             move_bullet(screen)
