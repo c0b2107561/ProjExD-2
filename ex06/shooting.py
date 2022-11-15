@@ -70,7 +70,7 @@ ebull_n = 0
 #佐々木
 p_hp = 100 #HP
 p_muteki = 0 #無敵状態の管理
-idx = 0 #ゲーム状態の管理
+idx = 0 #ゲーム状態の管理   
 ebull_x = [0] * ENEMY_MAX
 ebull_y = [0] * ENEMY_MAX
 ebull_a = [0] * ENEMY_MAX
@@ -115,19 +115,16 @@ def move_bullet(screen):#弾を飛ばす
 def move_player(screen, key):
     global px, py, space, player_hp, player_muteki, idx, t, score, reload_timer, REROAD_TIME
     if key[pg.K_UP] == 1:
-
         py = py - 10
         if py < 20:
             py = 20
             
     if key[pg.K_DOWN] == 1:
         py = py + 10
-
         if py > 400:
             py = 400
 
     if key[pg.K_LEFT] == 1:
-
         px = px - 10
         if px < 20:
             px = 20
